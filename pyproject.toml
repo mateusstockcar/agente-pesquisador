@@ -1,0 +1,12 @@
+[project]
+name = "agente-pesquisador"
+version = "0.1.0"
+description = "Agente de pesquisa de mercado com LangGraph, Gemini e observabilidade com Langfuse"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.4",
+    "langchain-google-genai>=2.1",
+    "langfuse>=3.0",
+    "python-dotenv>=1.0",
+]
