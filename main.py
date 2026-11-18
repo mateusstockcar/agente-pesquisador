@@ -2,7 +2,7 @@ import sys
 
 from dotenv import load_dotenv
 
-load_dotenv(override=True)  # carrega o .env antes de importar o grafo (ele lê as chaves)
+load_dotenv()  # carrega o .env antes de importar o grafo (ele lê as chaves)
 
 from langfuse.langchain import CallbackHandler  # noqa: E402
 
@@ -12,7 +12,6 @@ from agente.graph import construir_grafo  # noqa: E402
 def main() -> None:
     pergunta = " ".join(sys.argv[1:]) or "Como está o mercado de clínicas odontológicas em Curitiba?"
 
-    print(f"🔎 Pergunta: {pergunta}\n(se a API estiver sobrecarregada, ele tenta de novo automaticamente — pode levar 1-2 min)\n", flush=True)
     grafo = construir_grafo()
     langfuse = CallbackHandler()  # envia cada passo do grafo para o Langfuse
 
