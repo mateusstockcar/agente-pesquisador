@@ -1,0 +1,3 @@
+id,segundos,revisoes,fontes,nota_revisor,nota_juiz,fidelidade,cobertura,clareza,numeros_sem_fonte,citacoes_invalidas,fontes_fracas,edge_case_ok,comentario_juiz,erro
+solar,801.3,3,14,10,10.0,5,5,5,0,0,0,,"Relatório excelente, muito bem fundamentado nas fontes e perfeitamente alinhado à pergunta.",
+pet,295.1,1,8,10,10.0,5,5,5,0,0,1,,"O relatório responde perfeitamente à pergunta com dados precisos, excelente uso das fontes e alta clareza para gestores.",

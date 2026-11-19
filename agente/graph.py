@@ -51,6 +51,7 @@ class Estado(TypedDict, total=False):
     resposta: str
     revisao: dict
     revisoes_feitas: int
+    fontes_novas: int                               # quantas fontes a última pesquisa trouxe
 
 
 def _texto(msg) -> str:
@@ -122,7 +123,7 @@ def pesquisar(estado: Estado) -> Estado:
             )
     total = len(estado.get("fontes", [])) + len(novas)
     print(f"   ✅ +{len(novas)} fontes novas ({total} no total)", flush=True)
-    return {"fontes": novas}  # o reducer soma com as que já existiam
+    return {"fontes": novas, "fontes_novas": len(novas)}  # o reducer soma com as que já existiam
 
 
 def _fontes_numeradas(estado: Estado) -> str:
@@ -167,6 +168,9 @@ def revisar(estado: Estado) -> Estado:
         "Reprove (aprovado=false) se: alguma afirmação com número não tiver [n]; "
         "alguma citação [n] não for sustentada pela fonte; ou alguma sub-pergunta "
         "importante ficou sem resposta.\n"
+        "IMPORTANTE: se as fontes realmente NÃO contêm a informação, um relatório que admite "
+        "isso com clareza ('não encontrei dados confiáveis') está CORRETO — não reprove por isso. "
+        "Reprove apenas se a informação existir nas fontes e o relatório não a usou, ou se houver erro.\n"
         "Se reprovar, sugira até 3 novas buscas curtas que resolveriam as lacunas.\n\n"
         f"Pergunta: {estado['pergunta']}\n\n"
         f"RELATÓRIO:\n{estado['resposta']}\n\n"
@@ -190,6 +194,9 @@ def decidir(estado: Estado) -> Literal["pesquisar", "fim"]:
     """A aresta condicional: olha o estado e escolhe o próximo nó."""
     rev = estado["revisao"]
     if rev["aprovado"] or not estado["buscas_pendentes"]:
+        return "fim"
+    if estado["revisoes_feitas"] >= 2 and estado.get("fontes_novas", 1) == 0:
+        print("   ⏹️  A última busca não trouxe nenhuma fonte nova — pesquisar de novo não vai ajudar.", flush=True)
         return "fim"
     if estado["revisoes_feitas"] > MAX_REVISOES:
         print("   ⏹️  Limite de revisões atingido — entregando a melhor versão.", flush=True)

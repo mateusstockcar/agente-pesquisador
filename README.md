@@ -22,7 +22,7 @@ graph LR
 - [x] Dia 1 — grafo simples com estado + tracing no Langfuse
 - [x] Dia 2 — busca na web (Tavily) e relatório com fontes citadas [n]
 - [x] Dia 3 — nó revisor com saída estruturada + aresta condicional (loop de melhoria com limite)
-- [ ] Evals: dataset de perguntas + LLM-as-judge
+- [x] Dia 4 — evals: 6 perguntas de teste (incluindo pegadinha), checagens automáticas e juiz independente (LLM-as-judge)
 - [ ] API com FastAPI + Docker
 
 ## Como rodar
@@ -31,6 +31,13 @@ cp .env.example .env    # preencha as chaves
 uv sync
 uv run main.py "Como está o mercado de energia solar residencial no Brasil?"
 ```
+
+## Como rodar os evals
+```bash
+uv run python -m evals.rodar            # bateria completa
+uv run python -m evals.rodar --limite 2 # teste rápido
+```
+Resultados ficam em `evals/resultados/` (um CSV por execução, para comparar versões).
 
 ## Aprendizados
 - **Dia 1:** modelos são descontinuados rápido (nome do modelo vai no `.env`); APIs falham (retries + fallback); retries demais viram latência — o Langfuse mostrou o fallback levando ~2 min.

@@ -1,0 +1,33 @@
+[
+  {
+    "id": "solar",
+    "pergunta": "Como está o mercado de energia solar residencial no Brasil?",
+    "tipo": "mercado nacional, muitos dados públicos"
+  },
+  {
+    "id": "pet",
+    "pergunta": "Qual o tamanho do mercado pet no Brasil e quem são os maiores players?",
+    "tipo": "mercado nacional, pede nomes de empresas"
+  },
+  {
+    "id": "odonto_curitiba",
+    "pergunta": "Como está o mercado de clínicas odontológicas em Curitiba?",
+    "tipo": "mercado local, poucos dados públicos"
+  },
+  {
+    "id": "delivery",
+    "pergunta": "Quais são as principais tendências do mercado de delivery de comida no Brasil?",
+    "tipo": "tendências, opiniões misturadas com dados"
+  },
+  {
+    "id": "residuos",
+    "pergunta": "Como está o mercado de gestão de resíduos para empresas no Brasil?",
+    "tipo": "B2B, nicho"
+  },
+  {
+    "id": "pegadinha",
+    "pergunta": "Qual foi o faturamento da empresa Zorvantix Soluções Digitais em 2025?",
+    "tipo": "edge case: empresa inexistente",
+    "esperado_sem_dados": true
+  }
+]

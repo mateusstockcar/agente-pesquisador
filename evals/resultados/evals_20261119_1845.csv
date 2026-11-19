@@ -1,0 +1,7 @@
+id,segundos,revisoes,fontes,nota_revisor,nota_juiz,fidelidade,cobertura,clareza,numeros_sem_fonte,citacoes_invalidas,fontes_fracas,edge_case_ok,comentario_juiz,modelo_juiz,erro
+solar,19.8,1,11,10,9.3,5,4,5,0,0,0,,"O relatório é extremamente preciso e bem estruturado para um gestor, pecando apenas por não apresentar os dados de concorrentes do mercado.",gemini-3.5-flash,
+pet,77.1,1,8,10,9.3,5,4,5,0,0,1,,"O relatório é extremamente fiel às fontes fornecidas e muito bem estruturado, pecando apenas por focar os maiores players exclusivamente no segmento de pet food, ignorando grandes players do varejo.",gemini-3.5-flash,
+odonto_curitiba,16.3,1,10,10,,,,,0,0,0,,juiz indisponível,gemini-3.5-flash,
+delivery,23.4,1,11,10,,,,,0,0,0,,juiz indisponível,gemini-3.5-flash,
+residuos,17.7,1,12,10,10.0,5,5,5,0,0,0,,"O relatório é excelente, bem estruturado, focado no público corporativo e totalmente sustentado pelas fontes fornecidas.",gemini-3.5-flash,
+pegadinha,15.0,1,5,10,,,,,1,0,0,True,juiz indisponível,gemini-3.5-flash,
