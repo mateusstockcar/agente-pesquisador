@@ -66,7 +66,10 @@ def numeros_sem_fonte(relatorio: str) -> list[str]:
         f = f.strip()
         if not f or f.startswith("#"):
             continue
+        if f.endswith(":"):  # título de seção, não é afirmação
+            continue
         sem_citacao = re.sub(r"\[[\d,\s]+\]", "", f)
+        sem_citacao = re.sub(r"\b(19|20)\d{2}\b", "", sem_citacao)  # anos sozinhos não são dados
         tem_numero = re.search(r"\d", sem_citacao)
         citou = re.search(r"\[\d", f)
         if tem_numero and not citou:
@@ -106,7 +109,18 @@ juiz = _criar_llm(_modelo_juiz).with_structured_output(Avaliacao)
 print(f"⚖️  Juiz: {_modelo_juiz}", flush=True)
 
 
-def julgar(pergunta: str, estado: dict) -> Avaliacao:
+def julgar(pergunta: str, estado: dict, tentativas: int = 3) -> Avaliacao:
+    for t in range(1, tentativas + 1):
+        try:
+            return _julgar_uma_vez(pergunta, estado)
+        except Exception:
+            if t == tentativas:
+                raise
+            print(f"   ⏳ juiz ocupado, nova tentativa em {20 * t}s...", flush=True)
+            time.sleep(20 * t)
+
+
+def _julgar_uma_vez(pergunta: str, estado: dict) -> Avaliacao:
     prompt = (
         "Você é um avaliador rigoroso e imparcial de relatórios de pesquisa de mercado. "
         "Seja exigente: nota 5 só para trabalho realmente excelente.\n"
@@ -188,7 +202,9 @@ def _imprimir_resumo(linhas: list[dict]) -> None:
         print(f"{l['id']:<18}{str(l['nota_revisor']):>8}{str(l['nota_juiz'] if l['nota_juiz'] is not None else '-'):>7}{l['numeros_sem_fonte']:>9}"
               f"{l['citacoes_invalidas']:>9}{l['fontes_fracas']:>8}{l['segundos']:>7}s")
     if ok:
-        media = lambda campo: round(sum(l[campo] for l in ok if l[campo] is not None) / len(ok), 1)
+        def media(campo):  # média só das perguntas que têm valor (o juiz pode ter falhado)
+            valores = [l[campo] for l in ok if l.get(campo) is not None]
+            return round(sum(valores) / len(valores), 1) if valores else 0
         print("-" * 70)
         print(f"{'MÉDIA':<18}{media('nota_revisor'):>8}{media('nota_juiz'):>7}{media('numeros_sem_fonte'):>9}"
               f"{media('citacoes_invalidas'):>9}{media('fontes_fracas'):>8}{media('segundos'):>7}s")

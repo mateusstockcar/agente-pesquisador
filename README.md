@@ -23,7 +23,6 @@ graph LR
 - [x] Dia 2 — busca na web (Tavily) e relatório com fontes citadas [n]
 - [x] Dia 3 — nó revisor com saída estruturada + aresta condicional (loop de melhoria com limite)
 - [x] Dia 4 — evals: 6 perguntas de teste (incluindo pegadinha), checagens automáticas e juiz independente (LLM-as-judge)
-- [ ] API com FastAPI + Docker
 
 ## Como rodar
 ```bash
@@ -43,3 +42,17 @@ Resultados ficam em `evals/resultados/` (um CSV por execução, para comparar ve
 - **Dia 1:** modelos são descontinuados rápido (nome do modelo vai no `.env`); APIs falham (retries + fallback); retries demais viram latência — o Langfuse mostrou o fallback levando ~2 min.
 - **Dia 2:** sem fontes, o modelo responde com a "memória" e pode inventar números. Com busca + regra de citar [n], cada afirmação fica verificável.
 - **Dia 3:** um fluxo vira *agente* quando ele decide o próximo passo (aresta condicional). Saída estruturada (Pydantic) deixa o código ler a decisão do LLM com segurança. Todo loop precisa de freio (`MAX_REVISOES`).
+- **Dia 4:** evals encontram o que um teste por vez não mostra. A pergunta-pegadinha (empresa inexistente) revelou que o revisor *punia* a resposta honesta "não encontrei" e gastava 2 rodadas extras de busca. Corrigido: agora aprova o "não encontrei" honesto e para quando a busca não traz fonte nova. Também aprendi que o juiz precisa ser um modelo diferente do avaliado (senão é o aluno corrigindo a própria prova).
+
+## Resultados dos evals (19/11/2026)
+| Métrica | Antes das correções | Depois |
+|---|---|---|
+| Pegadinha | 3 rodadas, revisor deu 2 → 0 → 0 | 1 rodada, aprovada ✅ |
+| Tempo médio por pergunta | ~9 min (548 s, com o modelo principal falhando e caindo no fallback) | ~28 s |
+| Revisor × juiz independente | — | 10 × 9,5 (concordam) |
+| Citações inválidas | — | 0 |
+
+## Próximos passos
+- [ ] Dia 5 — tool calling nativo: o próprio LLM decide quando e o que pesquisar
+- [ ] Dia 6 — servidor MCP: o agente vira ferramenta para outras IAs (ex.: Claude)
+- [ ] Dia 7 — API com FastAPI + Docker
